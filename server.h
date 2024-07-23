@@ -11,11 +11,12 @@ class Server : public QTcpServer
 public:
     explicit Server(QObject *parent = nullptr);
 
+    ~Server();
+
     bool startServer(quint16 port);
     bool closeServer();
 
 signals:
-    void serverStared();
     void serverClosed();
 
 

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpServer>
+#include "server.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,7 +19,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButtonStartServer_clicked();
+
+    void on_pushButtonDisconnect_clicked();
+
+    void on_pushButtonStop_clicked();
+
 private:
     Ui::MainWindow *ui;
+    Server server;
 };
 #endif // MAINWINDOW_H

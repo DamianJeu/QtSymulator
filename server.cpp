@@ -1,39 +1,62 @@
 #include "server.h"
 #include <QHostInfo>
 
-Server::Server(QObject *parent) : QTcpServer(parent)
+Server::Server(QObject *parent) : QTcpServer(parent), clientSocket(nullptr)
 {
 
 
 
 }
 
+Server::~Server()
+{
+
+    if(clientSocket != nullptr)
+    {
+        clientSocket->close();
+        clientSocket->deleteLater();
+
+    }
+
+    this->close();
+    qDebug() << "Server destroyed!";
+
+}
+
 bool Server::startServer(quint16 port)
 {
-    if(!this->listen(QHostAddress::Any, port))
+    QHostAddress address("192.168.2.142");
+
+    if(!this->listen(address, port))
     {
         qDebug() << "Server could not start!";
         return false;
     }
     else
     {
-        qDebug() << "Server started!";
-        emit serverStared();
+
+        QHostAddress address = this->serverAddress();
+
+        qDebug() << "Server address: " << address.toString();
+
         return true;
     }
 
-    QHostAddress address = this->serverAddress();
 
-    qDebug() << "Server address: " << address.toString();
 }
 
 bool Server::closeServer()
 {
     if(this->isListening())
     {
+        if(clientSocket != nullptr)
+        {
+            clientSocket->close();
+            qDebug()<< "Client disconnected!";
+        }
+
         this->close();
-        emit serverClosed();
-        qDebug() << "Server closed!";
+        //emit serverClosed();
         return true;
     }
 
@@ -52,7 +75,7 @@ void Server::onClientDisconnected()
 {
     clientSocket->deleteLater();
     clientSocket = nullptr;
-    qDebug() << "Client disconnected!";
+    //qDebug() << "Client disconnected!";
 }
 
 void Server::clientSendData(QString &data)
