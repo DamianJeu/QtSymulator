@@ -56,7 +56,7 @@ bool Server::closeServer()
         if(clientSocket != nullptr)
         {
             clientSocket->close();
-            qDebug()<< "Client disconnected!";
+            qDebug()<< "Client disconnected by server close!";
         }
 
         this->close();
@@ -79,7 +79,7 @@ void Server::onClientDisconnected()
 {
     clientSocket->deleteLater();
     clientSocket = nullptr;
-    //qDebug() << "Client disconnected!";
+    qDebug() << "Client disconnected, deleteing client socket!";
 }
 
 void Server::clientSendData(QString &data)

@@ -6,122 +6,119 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>573</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>QtSymulator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextBrowser" name="textBrowserNetwork">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>210</y>
-      <width>281</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Serwer</string>
-    </property>
-    <widget class="QPushButton" name="pushButtonStop">
-     <property name="geometry">
-      <rect>
-       <x>12</x>
-       <y>89</y>
-       <width>80</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stop</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonStartServer">
-     <property name="geometry">
-      <rect>
-       <x>12</x>
-       <y>45</y>
-       <width>80</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>50</y>
-       <width>81</width>
-       <height>25</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>250</y>
-      <width>120</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Symulator</string>
-    </property>
-    <widget class="QWidget" name="verticalLayoutWidget_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>101</width>
-       <height>56</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Random</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Load</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="1">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Serwer</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButtonStop">
+         <property name="text">
+          <string>Stop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButtonStartServer">
+         <property name="text">
+          <string>Start</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QSpinBox" name="spinBox">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+         <property name="value">
+          <number>1234</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Port:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="3" rowspan="3">
+     <widget class="QTextBrowser" name="textBrowserNetwork">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="1">
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Symulator</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Load</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>Random</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>573</width>
      <height>21</height>
     </rect>
    </property>
