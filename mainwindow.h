@@ -21,9 +21,6 @@ public:
 
 private slots:
     void on_pushButtonStartServer_clicked();
-
-    void on_pushButtonDisconnect_clicked();
-
     void on_pushButtonStop_clicked();
 
 private:
