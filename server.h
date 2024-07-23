@@ -11,7 +11,13 @@ class Server : public QTcpServer
 public:
     explicit Server(QObject *parent = nullptr);
 
+    bool startServer(quint16 port);
+    bool closeServer();
+
 signals:
+    void serverStared();
+    void serverClosed();
+
 
     // QTcpServer interface
 
@@ -26,8 +32,8 @@ protected:
 
 
 private:
-    QTcpSocket * client;
-    quint16 connectionCount;
+    QTcpSocket * clientSocket;
+    quint16 m_connectionCount;
 };
 
 #endif // SERVER_H
