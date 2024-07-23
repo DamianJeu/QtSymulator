@@ -20,6 +20,7 @@ signals:
     void serverClosed();
 
 
+
     // QTcpServer interface
 
 private slots:

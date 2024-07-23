@@ -1,5 +1,6 @@
 #include "server.h"
 #include <QHostInfo>
+#include <QNetworkInterface>
 
 Server::Server(QObject *parent) : QTcpServer(parent), clientSocket(nullptr)
 {
@@ -25,7 +26,10 @@ Server::~Server()
 
 bool Server::startServer(quint16 port)
 {
-    QHostAddress address("192.168.2.142");
+    QHostAddress address = QHostAddress::AnyIPv4;
+
+
+
 
     if(!this->listen(address, port))
     {

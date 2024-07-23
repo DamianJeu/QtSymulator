@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <QTextBrowser>
+#include <QNetworkInterface>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -9,6 +12,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     Server server(this);
+    FileDialog dialog(this);
+
+    foreach (const auto &networkInterface, QNetworkInterface::allAddresses()) {
+        ui->textBrowserNetwork->append(networkInterface.toString());
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -24,21 +33,11 @@ void MainWindow::on_pushButtonStartServer_clicked()
     {
         qDebug()<<"Server started!";
     }
-    else
-    {
-        qDebug()<<"Server could not start!";
-    }
-
-}
-
-
-
-void MainWindow::on_pushButtonDisconnect_clicked()
-{
 
 
 
 }
+
 
 
 void MainWindow::on_pushButtonStop_clicked()
@@ -51,5 +50,11 @@ void MainWindow::on_pushButtonStop_clicked()
     {
         qDebug()<<"Server could not close!";
     }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    dialog.openFolderDialog();
 }
 
