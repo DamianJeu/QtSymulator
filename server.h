@@ -18,15 +18,15 @@ public:
 
 signals:
     void serverClosed();
+    void recivedMessage(QString data);
 
-
+public slots:
+    void sentToClient(QString data);
 
     // QTcpServer interface
-
 private slots:
     void onClientReadyRead();
     void onClientDisconnected();
-    void clientSendData(QString & data);
 
 
 protected:

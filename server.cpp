@@ -5,7 +5,9 @@
 Server::Server(QObject *parent) : QTcpServer(parent), clientSocket(nullptr)
 {
 
+    m_connectionCount = 0;
 
+    qDebug() << "Server created!";
 
 }
 
@@ -27,8 +29,6 @@ Server::~Server()
 bool Server::startServer(quint16 port)
 {
     QHostAddress address = QHostAddress::AnyIPv4;
-
-
 
 
     if(!this->listen(address, port))
@@ -60,7 +60,7 @@ bool Server::closeServer()
         }
 
         this->close();
-        //emit serverClosed();
+
         return true;
     }
 
@@ -71,7 +71,10 @@ void Server::onClientReadyRead()
 {
 
     QString data = clientSocket->readAll();
+
     qDebug() << "Data received: " << data;
+
+    emit recivedMessage(data);
 
 }
 
@@ -82,8 +85,10 @@ void Server::onClientDisconnected()
     qDebug() << "Client disconnected, deleteing client socket!";
 }
 
-void Server::clientSendData(QString &data)
+void Server::sentToClient(QString data)
 {
+    qDebug() << "Data sent to client: " << data;
+
     if(clientSocket != nullptr && clientSocket->state()==QAbstractSocket::ConnectedState)
     {
         clientSocket->write(data.toUtf8());

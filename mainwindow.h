@@ -6,6 +6,7 @@
 #include "server.h"
 #include <qcolumnview.h>
 #include "filedialog.h"
+#include "parser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,12 +26,15 @@ private slots:
     void on_pushButtonStartServer_clicked();
     void on_pushButtonStop_clicked();
 
-    void on_pushButton_clicked();
+    void on_pushButtonLoadFile_clicked();
+
+    void on_pushButtonRandom_clicked();
 
 private:
     Ui::MainWindow *ui;
     QColumnView *columnView;
-    Server server;
-    FileDialog dialog;
+    Server * server;
+    FileDialog * dialog;
+    Parser * parser;
 };
 #endif // MAINWINDOW_H
