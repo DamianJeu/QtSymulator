@@ -30,6 +30,11 @@ private slots:
 
     void on_pushButtonRandom_clicked();
 
+
+    void progressChanged(int progress);
+
+    void on_pushButtonResetFilePointer_clicked();
+
 private:
     Ui::MainWindow *ui;
     QColumnView *columnView;

@@ -11,9 +11,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    QList<QHostAddress> allAddresses = QNetworkInterface::allAddresses();
+    //QList<QHostAddress> ipv4Addresses;
     // Get all network interfaces address
-    for (const auto &networkInterface : QNetworkInterface::allAddresses()) {
-        ui->textBrowserNetwork->append(networkInterface.toString());
+    for (const auto &networkInterface : allAddresses) {
+
+        if(networkInterface.protocol() == QAbstractSocket::IPv4Protocol)
+        {
+            ui->textBrowserNetwork->append(networkInterface.toString());
+        }
+
     }
 
     // create object
@@ -25,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(server, &Server::recivedMessage, parser, &Parser::newDataReceived, Qt::ConnectionType::AutoConnection);
     QObject::connect(parser, &Parser::dataParsed, dialog, &FileDialog::dataParsed, Qt::ConnectionType::AutoConnection);
     QObject::connect(dialog, &FileDialog::sendToServer, server, &Server::sentToClient, Qt::ConnectionType::AutoConnection);
+    QObject::connect(dialog, &FileDialog::loadingProgress, this, &MainWindow::progressChanged, Qt::ConnectionType::AutoConnection);
 
 }
 
@@ -43,6 +51,7 @@ void MainWindow::on_pushButtonStartServer_clicked()
     if(server->startServer(1234))
     {
         qDebug()<<"Server started!";
+        ui->progressBar->setValue(0);
     }
 
 }
@@ -59,6 +68,8 @@ void MainWindow::on_pushButtonStop_clicked()
     {
         qDebug()<<"Server could not close!";
     }
+
+    ui->progressBar->setValue(0);
 }
 
 
@@ -72,5 +83,17 @@ void MainWindow::on_pushButtonRandom_clicked()
 {
 
 
+}
+
+void MainWindow::progressChanged(int progress)
+{
+    ui->progressBar->setValue(progress);
+    // qDebug()<<"Progress: "<<progress;
+}
+
+
+void MainWindow::on_pushButtonResetFilePointer_clicked()
+{
+    dialog->setLineCounter(0);
 }
 

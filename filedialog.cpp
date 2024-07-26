@@ -25,6 +25,8 @@ void FileDialog::openFolderDialog()
     }
 }
 
+
+
 void FileDialog::openFile()
 {
 
@@ -38,24 +40,45 @@ void FileDialog::openFile()
 
     QTextStream in(&file);
 
-    QString line = in.readLine();
-    quint64 lineCounter = 0;
+    m_totalLines = 0;
+
+    while (!in.atEnd())
+    {
+        in.readLine();
+        m_totalLines++;
+    }
+
+    qDebug() << "Total lines: " << m_totalLines;
+    in.seek(0);
+
+
+    m_lineCounter=0;
 
     if(!fileLine.isEmpty())
     {
         fileLine.clear();
     }
 
-    while(!line.isNull())
+
+    quint8 percent;
+
+    while (!in.atEnd())
     {
-        qDebug() << line;
-        line = in.readLine();
-        fileLine[lineCounter++] = line;
+        QString line = in.readLine();
+        fileLine[m_lineCounter++] = line;
+        qDebug()<<line;
 
-
+        quint8 newPercent = (m_lineCounter * 100) / m_totalLines;
+        if (newPercent != percent)
+        {
+            percent = newPercent;
+            emit loadingProgress(percent);
+        }
     }
     file.close();
     qDebug() << "File closed!";
+
+     m_lineCounter=0;
 
 
 }
@@ -77,19 +100,32 @@ QString FileDialog::getFileLine(quint64 line)
 
 void FileDialog::dataParsed(QString data)
 {
+    static quint8 percent;
 
-
-    static quint64 line = 0;
-
-    if(getFileLine(line++)!=nullptr)
+    if(getFileLine(m_lineCounter++)!=nullptr)
     {
-        emit sendToServer(getFileLine(line));
+        emit sendToServer(getFileLine(m_lineCounter));
+
+        quint8 newPercent = (m_lineCounter * 100) / m_totalLines;
+        if (newPercent != percent)
+        {
+            percent = newPercent;
+            emit loadingProgress(percent);
+        }
     }
     else
     {
-        line=0;
         qDebug()<<"End of file!";
     }
-
-
 }
+
+quint64 FileDialog::getLineCounter() const
+{
+    return m_lineCounter;
+}
+
+void FileDialog::setLineCounter(quint64 newLineCounter)
+{
+    m_lineCounter = newLineCounter;
+}
+
