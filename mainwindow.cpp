@@ -33,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(parser, &Parser::dataParsed, dialog, &FileDialog::dataParsed, Qt::ConnectionType::AutoConnection);
     QObject::connect(dialog, &FileDialog::sendToServer, server, &Server::sentToClient, Qt::ConnectionType::AutoConnection);
     QObject::connect(dialog, &FileDialog::loadingProgress, this, &MainWindow::progressChanged, Qt::ConnectionType::AutoConnection);
+    QObject::connect(parser, &Parser::dataPointerReset, this, &MainWindow::on_pushButtonResetFilePointer_clicked, Qt::ConnectionType::AutoConnection);
+    QObject::connect(server, &Server::clientConnected, this, &MainWindow::clientConnected, Qt::ConnectionType::AutoConnection);
+    QObject::connect(server, &Server::clientDisconnected, this, &MainWindow::clientDisconnected, Qt::ConnectionType::AutoConnection);
 
 }
 
@@ -95,5 +98,19 @@ void MainWindow::progressChanged(int progress)
 void MainWindow::on_pushButtonResetFilePointer_clicked()
 {
     dialog->setLineCounter(0);
+    ui->progressBar->setValue(0);
 }
 
+void MainWindow::clientDisconnected()
+{
+    ui->labelConnectionStatus->setText("Disconnected");
+    ui->labelConnectionStatus->setStyleSheet("QLabel { background-color : default; }");
+    qDebug()<<"Client disconnected!";
+}
+
+void MainWindow::clientConnected()
+{
+    ui->labelConnectionStatus->setText("Connected");
+    ui->labelConnectionStatus->setStyleSheet("QLabel { background-color : green; }");
+    qDebug()<<"Client connected!";
+}

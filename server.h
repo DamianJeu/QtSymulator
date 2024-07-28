@@ -19,6 +19,8 @@ public:
 signals:
     void serverClosed();
     void recivedMessage(QString data);
+    void clientConnected();
+    void clientDisconnected();
 
 public slots:
     void sentToClient(QString data);

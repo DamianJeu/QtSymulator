@@ -18,6 +18,7 @@ public slots:
 signals:
 
     void dataParsed(QString data);
+    void dataPointerReset();
 
 };
 

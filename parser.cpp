@@ -19,6 +19,12 @@ bool Parser::newDataReceived(QString data)
 
     qDebug() << this << "Data received";
 
+    if(data == "RST")
+    {
+        emit dataPointerReset();
+        return false;
+    }
+
 
     emit dataParsed(data);
 

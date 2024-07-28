@@ -115,6 +115,7 @@ void FileDialog::dataParsed(QString data)
     }
     else
     {
+        emit sendToServer("EOF");
         qDebug()<<"End of file!";
     }
 }

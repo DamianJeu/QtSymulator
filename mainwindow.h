@@ -35,6 +35,9 @@ private slots:
 
     void on_pushButtonResetFilePointer_clicked();
 
+    void clientDisconnected();
+    void clientConnected();
+
 private:
     Ui::MainWindow *ui;
     QColumnView *columnView;

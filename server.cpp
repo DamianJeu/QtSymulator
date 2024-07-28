@@ -82,6 +82,7 @@ void Server::onClientDisconnected()
 {
     clientSocket->deleteLater();
     clientSocket = nullptr;
+    emit clientDisconnected();
     qDebug() << "Client disconnected, deleteing client socket!";
 }
 
@@ -123,6 +124,7 @@ void Server::incomingConnection(qintptr handle)
     }
 
     qDebug()<< "New client connected from:"<< clientSocket->peerAddress().toString();
+    emit clientConnected();
 
 }
 
