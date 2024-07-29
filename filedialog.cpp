@@ -103,9 +103,9 @@ void FileDialog::dataParsed(const QString &data)
     }
     else
     {
-        emit sendToServer("EOF");
+       // emit sendToServer("EOF");
         emit endOfFileReached();
-        qDebug()<<"End of file!";
+      //  qDebug()<<"End of file!";
     }
 }
 

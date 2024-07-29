@@ -3,8 +3,6 @@
 #include <QTextBrowser>
 #include <QNetworkInterface>
 
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -12,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     QList<QHostAddress> allAddresses = QNetworkInterface::allAddresses();
-    //QList<QHostAddress> ipv4Addresses;
+
     // Get all network interfaces address
     for (const auto &networkInterface : allAddresses) {
 
@@ -20,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
         {
             ui->textBrowserNetwork->append(networkInterface.toString());
         }
-
     }
 
     // create object
@@ -40,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(server, &Server::serverStarted, this, &MainWindow::serverStarted, Qt::ConnectionType::AutoConnection);
     QObject::connect(server, &Server::serverClosed, this, &MainWindow::serverClosed, Qt::ConnectionType::AutoConnection);
     QObject::connect(dialog, &FileDialog::endOfFileReached, this,&MainWindow::endOfFileReached, Qt::ConnectionType::AutoConnection);
+    QObject::connect(this, &MainWindow::sendEndOfFileReached, server, &Server::sentToClient, Qt::ConnectionType::AutoConnection);
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +54,7 @@ void MainWindow::on_pushButtonStartServer_clicked()
     {
         qDebug()<<"Server started!";
         ui->progressBar->setValue(0);
+        dialog->setLineCounter(0);
     }
 }
 
@@ -69,8 +68,7 @@ void MainWindow::on_pushButtonStop_clicked()
     {
         qDebug()<<"Server could not close!";
     }
-
-    ui->progressBar->setValue(0);
+    //ui->progressBar->setValue(0);
 }
 
 
@@ -110,7 +108,6 @@ void MainWindow::addServerErrorToLogs(const QString &error)
     ui->textBrowserNetwork->setTextColor(QColorConstants::Red);
     ui->textBrowserNetwork->append(error);
     ui->textBrowserNetwork->setTextColor(QColorConstants::White);
-
 }
 
 void MainWindow::serverStarted()
@@ -131,5 +128,24 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::endOfFileReached()
 {
     ui->textBrowserNetwork->append("End of file !");
+
+    if(loopFile)
+    {
+        dialog->setLineCounter(0);
+        ui->progressBar->setValue(0);
+    }
+    else
+    {
+        ui->progressBar->setValue(0);
+        emit sendEndOfFileReached("EOF");
+    }
+}
+
+void MainWindow::on_checkBoxFileLoop_stateChanged(int arg1)
+{
+    if(arg1)loopFile = true;
+    else loopFile = false;
+
+    qDebug()<<"Loop file: "<<loopFile;
 }
 

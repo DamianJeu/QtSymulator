@@ -22,6 +22,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+
+    void sendEndOfFileReached(const QString &data);
+
 private slots:
     void on_pushButtonStartServer_clicked();
     void on_pushButtonStop_clicked();
@@ -36,11 +40,15 @@ private slots:
     void on_pushButton_clicked();
     void endOfFileReached();
 
+    void on_checkBoxFileLoop_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QColumnView *columnView;
     Server * server;
     FileDialog * dialog;
     Parser * parser;
+
+    bool loopFile;
 };
 #endif // MAINWINDOW_H
