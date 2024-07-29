@@ -17,10 +17,8 @@ public:
 
     ~FileDialog();
 
-
     quint64 totalLines() const;
     void setTotalLines(quint64 newTotalLines);
-
     quint64 getLineCounter() const;
     void setLineCounter(quint64 newLineCounter);
 
@@ -28,13 +26,13 @@ public slots:
     void openFolderDialog();
     void openFile();
     QString getFileLine(quint64 line);
-    void dataParsed(QString data);
+    void dataParsed(const QString &data);
 
 signals:
 
-    void sendToServer(QString data);
+    void sendToServer(const QString &data);
     void loadingProgress(int progress);
-
+    void endOfFileReached();
 
 private:
     QString filePath;

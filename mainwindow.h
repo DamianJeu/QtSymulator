@@ -25,18 +25,16 @@ public:
 private slots:
     void on_pushButtonStartServer_clicked();
     void on_pushButtonStop_clicked();
-
     void on_pushButtonLoadFile_clicked();
-
-    void on_pushButtonRandom_clicked();
-
-
     void progressChanged(int progress);
-
     void on_pushButtonResetFilePointer_clicked();
-
     void clientDisconnected();
     void clientConnected();
+    void addServerErrorToLogs(const QString &error);
+    void serverStarted();
+    void serverClosed();
+    void on_pushButton_clicked();
+    void endOfFileReached();
 
 private:
     Ui::MainWindow *ui;

@@ -25,12 +25,8 @@ void FileDialog::openFolderDialog()
     }
 }
 
-
-
 void FileDialog::openFile()
 {
-
-
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
@@ -51,7 +47,6 @@ void FileDialog::openFile()
     qDebug() << "Total lines: " << m_totalLines;
     in.seek(0);
 
-
     m_lineCounter=0;
 
     if(!fileLine.isEmpty())
@@ -59,14 +54,12 @@ void FileDialog::openFile()
         fileLine.clear();
     }
 
-
     quint8 percent;
 
     while (!in.atEnd())
     {
         QString line = in.readLine();
         fileLine[m_lineCounter++] = line;
-        qDebug()<<line;
 
         quint8 newPercent = (m_lineCounter * 100) / m_totalLines;
         if (newPercent != percent)
@@ -78,14 +71,11 @@ void FileDialog::openFile()
     file.close();
     qDebug() << "File closed!";
 
-     m_lineCounter=0;
-
-
+    m_lineCounter=0;
 }
 
 QString FileDialog::getFileLine(quint64 line)
 {
-
     if(fileLine.contains(line))
     {
         return fileLine[line];
@@ -94,11 +84,9 @@ QString FileDialog::getFileLine(quint64 line)
     {
         return nullptr;
     }
-
-
 }
 
-void FileDialog::dataParsed(QString data)
+void FileDialog::dataParsed(const QString &data)
 {
     static quint8 percent;
 
@@ -116,6 +104,7 @@ void FileDialog::dataParsed(QString data)
     else
     {
         emit sendToServer("EOF");
+        emit endOfFileReached();
         qDebug()<<"End of file!";
     }
 }

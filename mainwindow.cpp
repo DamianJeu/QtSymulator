@@ -36,15 +36,16 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(parser, &Parser::dataPointerReset, this, &MainWindow::on_pushButtonResetFilePointer_clicked, Qt::ConnectionType::AutoConnection);
     QObject::connect(server, &Server::clientConnected, this, &MainWindow::clientConnected, Qt::ConnectionType::AutoConnection);
     QObject::connect(server, &Server::clientDisconnected, this, &MainWindow::clientDisconnected, Qt::ConnectionType::AutoConnection);
-
+    QObject::connect(server, &Server::errorSignal, this, &MainWindow::addServerErrorToLogs, Qt::ConnectionType::AutoConnection);
+    QObject::connect(server, &Server::serverStarted, this, &MainWindow::serverStarted, Qt::ConnectionType::AutoConnection);
+    QObject::connect(server, &Server::serverClosed, this, &MainWindow::serverClosed, Qt::ConnectionType::AutoConnection);
+    QObject::connect(dialog, &FileDialog::endOfFileReached, this,&MainWindow::endOfFileReached, Qt::ConnectionType::AutoConnection);
 }
 
 MainWindow::~MainWindow()
 {
-
     qDebug()<<"Main window destroyed!";
     delete ui;
-
 }
 
 void MainWindow::on_pushButtonStartServer_clicked()
@@ -56,10 +57,7 @@ void MainWindow::on_pushButtonStartServer_clicked()
         qDebug()<<"Server started!";
         ui->progressBar->setValue(0);
     }
-
 }
-
-
 
 void MainWindow::on_pushButtonStop_clicked()
 {
@@ -81,19 +79,11 @@ void MainWindow::on_pushButtonLoadFile_clicked()
     dialog->openFolderDialog();
 }
 
-
-void MainWindow::on_pushButtonRandom_clicked()
-{
-
-
-}
-
 void MainWindow::progressChanged(int progress)
 {
     ui->progressBar->setValue(progress);
     // qDebug()<<"Progress: "<<progress;
 }
-
 
 void MainWindow::on_pushButtonResetFilePointer_clicked()
 {
@@ -114,3 +104,32 @@ void MainWindow::clientConnected()
     ui->labelConnectionStatus->setStyleSheet("QLabel { background-color : green; }");
     qDebug()<<"Client connected!";
 }
+
+void MainWindow::addServerErrorToLogs(const QString &error)
+{
+    ui->textBrowserNetwork->setTextColor(QColorConstants::Red);
+    ui->textBrowserNetwork->append(error);
+    ui->textBrowserNetwork->setTextColor(QColorConstants::White);
+
+}
+
+void MainWindow::serverStarted()
+{
+    ui->textBrowserNetwork->append("Server started!");
+}
+
+void MainWindow::serverClosed()
+{
+    ui->textBrowserNetwork->append("Server closed!");
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->textBrowserNetwork->clear();
+}
+
+void MainWindow::endOfFileReached()
+{
+    ui->textBrowserNetwork->append("End of file !");
+}
+

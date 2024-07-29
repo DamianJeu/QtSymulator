@@ -13,11 +13,11 @@ public:
 
 public slots:
 
-    bool newDataReceived(QString data);
+    bool newDataReceived(const QString &data);
 
 signals:
 
-    void dataParsed(QString data);
+    void dataParsed(const QString &data);
     void dataPointerReset();
 
 };

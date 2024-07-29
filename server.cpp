@@ -4,16 +4,15 @@
 
 Server::Server(QObject *parent) : QTcpServer(parent), clientSocket(nullptr)
 {
-
     m_connectionCount = 0;
 
     qDebug() << "Server created!";
 
+   // QObject::connect(this, &QTcpServer::acceptError, this, &Server::error);
 }
 
 Server::~Server()
 {
-
     if(clientSocket != nullptr)
     {
         clientSocket->close();
@@ -23,13 +22,11 @@ Server::~Server()
 
     this->close();
     qDebug() << "Server destroyed!";
-
 }
 
 bool Server::startServer(quint16 port)
 {
     QHostAddress address = QHostAddress::AnyIPv4;
-
 
     if(!this->listen(address, port))
     {
@@ -38,15 +35,14 @@ bool Server::startServer(quint16 port)
     }
     else
     {
-
         QHostAddress address = this->serverAddress();
 
         qDebug() << "Server address: " << address.toString();
 
+        emit serverStarted();
+
         return true;
     }
-
-
 }
 
 bool Server::closeServer()
@@ -58,8 +54,8 @@ bool Server::closeServer()
             clientSocket->close();
             qDebug()<< "Client disconnected by server close!";
         }
-
         this->close();
+        emit serverClosed();
 
         return true;
     }
@@ -75,7 +71,6 @@ void Server::onClientReadyRead()
     qDebug() << "Data received: " << data;
 
     emit recivedMessage(data);
-
 }
 
 void Server::onClientDisconnected()
@@ -86,7 +81,13 @@ void Server::onClientDisconnected()
     qDebug() << "Client disconnected, deleteing client socket!";
 }
 
-void Server::sentToClient(QString data)
+void Server::error(QAbstractSocket::SocketError socketError)
+{
+    QString error = clientSocket->errorString();
+    emit errorSignal(error);
+}
+
+void Server::sentToClient(const QString & data)
 {
     qDebug() << "Data sent to client: " << data;
 
@@ -104,7 +105,6 @@ void Server::sentToClient(QString data)
 
 void Server::incomingConnection(qintptr handle)
 {
-
     // if there is already a client connected, reject the new connection
     if(clientSocket != nullptr)
     {
@@ -120,12 +120,12 @@ void Server::incomingConnection(qintptr handle)
     {
         connect(clientSocket, &QTcpSocket::readyRead, this, &Server::onClientReadyRead);
         connect(clientSocket, &QTcpSocket::disconnected, this, &Server::onClientDisconnected);
+        connect(clientSocket, &QTcpSocket::errorOccurred,this, &Server::error);
         qDebug() << "Client connected!";
     }
 
     qDebug()<< "New client connected from:"<< clientSocket->peerAddress().toString();
     emit clientConnected();
-
 }
 
 

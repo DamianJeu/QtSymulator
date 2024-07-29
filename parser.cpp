@@ -14,9 +14,8 @@ Parser::~Parser()
     qDebug() << "Parser destroyed!";
 }
 
-bool Parser::newDataReceived(QString data)
+bool Parser::newDataReceived(const QString &data)
 {
-
     qDebug() << this << "Data received";
 
     if(data == "RST")
@@ -24,7 +23,6 @@ bool Parser::newDataReceived(QString data)
         emit dataPointerReset();
         return false;
     }
-
 
     emit dataParsed(data);
 

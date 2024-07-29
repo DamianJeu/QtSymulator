@@ -18,22 +18,24 @@ public:
 
 signals:
     void serverClosed();
-    void recivedMessage(QString data);
+    void serverStarted();
+    void recivedMessage(const QString &data);
     void clientConnected();
     void clientDisconnected();
+    void errorSignal(const QString &error);
+    // void
 
 public slots:
-    void sentToClient(QString data);
+    void sentToClient(const QString &data);
 
     // QTcpServer interface
 private slots:
     void onClientReadyRead();
     void onClientDisconnected();
-
+    void error(QAbstractSocket::SocketError socketError);
 
 protected:
     void incomingConnection(qintptr handle) override;
-
 
 private:
     QTcpSocket * clientSocket;

@@ -14,7 +14,7 @@
    <string>QtSymulator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2">
+   <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0" colspan="2">
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
@@ -70,10 +70,26 @@
      </widget>
     </item>
     <item row="0" column="2" rowspan="2">
-     <widget class="QTextBrowser" name="textBrowserNetwork">
-      <property name="enabled">
-       <bool>true</bool>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="title">
+       <string>Logi:</string>
       </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QTextBrowser" name="textBrowserNetwork">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Wyczyść</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item row="1" column="0">
