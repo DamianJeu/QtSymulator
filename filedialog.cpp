@@ -1,5 +1,8 @@
 #include "filedialog.h"
 
+/**
+ * @brief Constructor FileDialog class.
+ */
 FileDialog::FileDialog(QObject *parent)
     : QObject{parent}
 {
@@ -8,11 +11,19 @@ FileDialog::FileDialog(QObject *parent)
 
 }
 
+/**
+ * @brief Deconstructor FileDialog class.
+ */
 FileDialog::~FileDialog()
 {
     qDebug() << "File dialog destroyed!";
 }
 
+/**
+ * @brief Opens a dialog window to choose a file.
+ *
+ * Opens a dialog window to choose a file.
+ */
 void FileDialog::openFolderDialog()
 {
     QString path = QFileDialog::getOpenFileName(nullptr, tr("Wybierz plik"), "/home",tr("Text files (*.txt)"));
@@ -25,6 +36,11 @@ void FileDialog::openFolderDialog()
     }
 }
 
+/**
+ * @brief Opens a file.
+ *
+ * Opens a file and reads it line by line.
+ */
 void FileDialog::openFile()
 {
     QFile file(filePath);
@@ -74,6 +90,11 @@ void FileDialog::openFile()
     m_lineCounter=0;
 }
 
+/**
+ * @brief Returns text line with the given index.
+ * @param quint64 line lineIndex.
+ * @return QString fileLine
+ */
 QString FileDialog::getFileLine(quint64 line)
 {
     if(fileLine.contains(line))
@@ -86,6 +107,10 @@ QString FileDialog::getFileLine(quint64 line)
     }
 }
 
+/**
+ * @brief Parses the data from the file.
+ * @param const QString &data
+ */
 void FileDialog::dataParsed(const QString &data)
 {
     static quint8 percent;
@@ -103,17 +128,24 @@ void FileDialog::dataParsed(const QString &data)
     }
     else
     {
-       // emit sendToServer("EOF");
         emit endOfFileReached();
-      //  qDebug()<<"End of file!";
+        qDebug()<<"End of file!";
     }
 }
 
+/**
+ * @brief Returns the total number of lines in the file.
+ * @return quint64 m_totalLines
+ */
 quint64 FileDialog::getLineCounter() const
 {
     return m_lineCounter;
 }
 
+/**
+ * @brief Sets the total number of lines in the file.
+ * @param newTotalLines
+ */
 void FileDialog::setLineCounter(quint64 newLineCounter)
 {
     m_lineCounter = newLineCounter;

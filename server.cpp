@@ -2,15 +2,20 @@
 #include <QHostInfo>
 #include <QNetworkInterface>
 
+/**
+ * @brief Constructor Server class.
+ */
 Server::Server(QObject *parent) : QTcpServer(parent), clientSocket(nullptr)
 {
     m_connectionCount = 0;
 
     qDebug() << "Server created!";
 
-   // QObject::connect(this, &QTcpServer::acceptError, this, &Server::error);
 }
 
+/**
+ * @brief Deconstructor Server class.
+ */
 Server::~Server()
 {
     if(clientSocket != nullptr)
@@ -24,6 +29,14 @@ Server::~Server()
     qDebug() << "Server destroyed!";
 }
 
+/**
+ * @brief Starts the server.
+ *
+ * @param quint16 port Port number
+ * @return bool true if server started successfully, false otherwise
+ *
+ * This method is responsible for starting the server.
+ */
 bool Server::startServer(quint16 port)
 {
     QHostAddress address = QHostAddress::AnyIPv4;
@@ -45,6 +58,13 @@ bool Server::startServer(quint16 port)
     }
 }
 
+/**
+ * @brief Closes the server.
+ *
+ * @return bool true if server closed successfully, false otherwise
+ *
+ * This method is responsible for closing the server.
+ */
 bool Server::closeServer()
 {
     if(this->isListening())
@@ -63,6 +83,9 @@ bool Server::closeServer()
     return false;
 }
 
+/**
+ * @brief Slot called when data is received from the client.
+ */
 void Server::onClientReadyRead()
 {
 
@@ -73,6 +96,9 @@ void Server::onClientReadyRead()
     emit recivedMessage(data);
 }
 
+/**
+ * @brief Slot called when client is disconnected.
+ */
 void Server::onClientDisconnected()
 {
     clientSocket->deleteLater();
@@ -81,12 +107,22 @@ void Server::onClientDisconnected()
     qDebug() << "Client disconnected, deleteing client socket!";
 }
 
+/**
+ * @brief Slot called when error occurs.
+ *
+ * @param QAbstractSocket::SocketError socketError
+ */
 void Server::error(QAbstractSocket::SocketError socketError)
 {
     QString error = clientSocket->errorString();
     emit errorSignal(error);
 }
 
+/**
+ * @brief Sends data to the client.
+ *
+ * @param const QString & data Data to be sent to the client
+ */
 void Server::sentToClient(const QString & data)
 {
     qDebug() << "Data sent to client: " << data;
@@ -103,6 +139,11 @@ void Server::sentToClient(const QString & data)
 }
 
 
+/**
+ * @brief Slot called when new connection is established.
+ *
+ * @param qintptr handle
+ */
 void Server::incomingConnection(qintptr handle)
 {
     // if there is already a client connected, reject the new connection

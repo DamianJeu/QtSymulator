@@ -9,6 +9,12 @@
 #include <QFile>
 
 
+/**
+ * @class FileDialog
+ * @brief Handling system files.
+ *
+ * Allows to open a txt file and handle it for the simulator's needs
+ */
 class FileDialog : public QObject
 {
     Q_OBJECT
